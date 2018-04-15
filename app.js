@@ -57,6 +57,7 @@ const Bomb = document.getElementById("Bomb");
 function update(){
     clear();
     if(Bomb.selected){
+        canvas.style.display = "block";
         bombRender();
     }else{
         $(document).ready(function(){
@@ -138,8 +139,24 @@ function pauseTime(){
     }
 }
 
+    const soundMenu = document.getElementById("soundMenu");
+    const Alarm = document.getElementById("Alarm");
+    const Explosion = document.getElementById("Explosion");
+    const Mute = document.getElementById("Mute");
     const sound = document.createElement("audio");
-    sound.src = "gentleAlarm.mp3";
+    //sound.src = "gentleAlarm.mp3";
+    var soundSource= "gentleAlarm.mp3";
+
+    soundMenu.addEventListener("change", function(){
+        if(Explosion.selected){
+            soundSource = "explosion.mp3";
+        }else if(Mute.selected){
+            soundSource = "";
+        }else{
+            soundSource = "gentleAlarm.mp3";
+        }
+    });
+
     sound.setAttribute("preload", "auto");
     sound.setAttribute("controls", "none");
     sound.style.display = "none";
@@ -148,6 +165,7 @@ function pauseTime(){
 function endTime(){
     console.log(sound.currentTime);
     sound.pause();
+    output.innerHTML = "";
     stop.style.display = "none";
     start.innerHTML="START";
     $(document).ready(function(){
@@ -178,13 +196,6 @@ function setTime(){
         else if(Centuries.selected)
             timerMilli=timerMilli*(1000*60*60*24*365*100);
         sound.pause();
-        if(PlainText.selected){
-            $(document).ready(function(){
-                $("#outJumbo").slideDown();
-            });
-        }else{
-            canvas.style.display = "block";
-        }
         countDownDate = new Date().getTime() + timerMilli;
         initalDistance = timerMilli;
         timerLoop = setInterval(updateTimer, 1);
@@ -199,7 +210,7 @@ function setTime(){
 // Update the count down every 1 second
 var progress;
 var timerState;
-var alarmRung;
+var alarmRung = true;
 function updateTimer(){
     if(!paused){
         var now = new Date().getTime();
@@ -234,8 +245,11 @@ function updateTimer(){
             stop.style.display = "block";
             pause.style.display = "none";
             timerState = "DONE";
-            stopAlarm = false;
-            sound.play();
+            sound.src = soundSource;
+            if(soundSource!=""){
+                sound.currentTime = 0;
+                sound.play();
+            }
             clearInterval(timerLoop);
             alarmRung = false;
         }
@@ -244,9 +258,47 @@ function updateTimer(){
         }
     }
 }
-var stopAlarm = true;
 
 sound.addEventListener("ended", function(){
-     sound.currentTime = 0;
-     sound.play();
+    if(soundSource!=""){
+        sound.src=soundSource;
+        sound.currentTime = 0;
+        sound.play();
+    }
 });
+
+
+
+const codeNumber = document.getElementById("codeNumber");
+var code;
+var codeFound = false;
+checkCode();
+function checkCode(){
+    code =
+""+Math.floor(Math.random()*10)+Math.floor(Math.random()*10)+Math.floor(Math.random()*10)+Math.floor(Math.random()*10)+Math.floor(Math.random()*10)+Math.floor(Math.random()*10);
+    codeNumber.innerHTML=code;
+    firebase.database().ref().child(code).once("value",function(snap){
+        console.log(snap.val());
+        if(snap.val()!=null){
+            checkCode();
+        }else{
+            codeFound = true;
+            firebase.database().ref().child(code).set({
+                duration:0
+            });
+            firebase.database().ref("/"+code/*getCode()*/).on("value",function(snap){
+                console.log(snap.child("duration").val());
+                if(snap.child("duration").val()>0){
+                    countDownDate=snap.child("duration").val();
+                }
+            });
+        }
+    });
+}
+
+function getCode(){
+    while(!codeFound){
+        console.log("waiting");
+    }
+    return code;
+}

@@ -73,12 +73,25 @@ function update(){
         }
     }
 }
+//add bomb exploading
+//scale canvas
 const outJumbo = document.getElementById("outJumbo");
 var bomb = new Image();
 bomb.src = "fuse-bomb.png";
+var fire = new Image();
+fire.src = "fire.jpg";
+var size = 200;
+
 function bombRender(){
     outJumbo.style.display = "none";
-    ctx.drawImage(bomb,200,200,);
+    console.log(progress);
+    if(progress<0){
+        size+=50;
+    }
+    if(size<=200)
+        ctx.drawImage(bomb,200,200);
+    else if(size<1000)
+        ctx.drawImage(fire,350-size/2,350-size/2,size,size);
     ctx.beginPath();
     ctx.lineWidth=5;
     ctx.moveTo(453, 225);
@@ -180,6 +193,7 @@ function setTime(){
     if(timerMilli<=0)
         timerMilli=NaN;
     if(!isNaN(timerMilli)){
+        size = 200;
         start.innerHTML="RESET";
         stop.style.display = "none";
         pause.style.display = "block";

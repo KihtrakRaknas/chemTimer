@@ -202,7 +202,6 @@ function setTime(){
     if(timerMilli<=0)
         timerMilli=NaN;
     if(!isNaN(timerMilli)){
-        size = 200;
         start.innerHTML="RESET";
         stop.style.display = "none";
         pause.style.display = "block";
@@ -221,6 +220,7 @@ function setTime(){
         sound.pause();
         countDownDate = new Date().getTime() + timerMilli;
         initalDistance = timerMilli;
+	size = 200;
         timerLoop = setInterval(updateTimer, 1);
     }else{
        $(document).ready(function(){

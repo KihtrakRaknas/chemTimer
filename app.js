@@ -42,6 +42,7 @@ window.onload = function(){
 	canvas.height = window.innerHeight-document.getElementById("controlPanel").offsetHeight;;
     //var part = new sparks(50,50);
     //spark(50,50);
+    ctx.scale(canvas.width/680,canvas.width/680);
     var loop = setInterval(update,5);
 }
 
@@ -54,23 +55,33 @@ function addPart(x,y){
 const PlainText = document.getElementById("PlainText");
 const Bomb = document.getElementById("Bomb");
 
+const changeX = 190;
+const changeY = 190;
+
 function update(){
     clear();
     if(Bomb.selected){
         canvas.style.display = "block";
+        outJumbo.style.display = "none";
         bombRender();
+        if(progress>0&&progress!=undefined){
+            ctx.fillStyle = "black";
+            ctx.font = "60px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(timerState,680/2,550-changeY);
+        } 
+        for(var i = 0;i!=parts.length;i++){
+            if(parts[i].frames<=45){
+                parts[i].update();
+            }else{
+                parts.splice(i, 1);
+                i--;
+            }
+        }
     }else{
         $(document).ready(function(){
             $("#outJumbo").slideDown();
         });
-    }
-    for(var i = 0;i!=parts.length;i++){
-        if(parts[i].frames<=45){
-            parts[i].update();
-        }else{
-            parts.splice(i, 1);
-            i--;
-        }
     }
 }
 //add bomb exploading
@@ -83,18 +94,16 @@ fire.src = "fire.jpg";
 var size = 200;
 
 function bombRender(){
-    outJumbo.style.display = "none";
-    console.log(progress);
     if(progress<0){
         size+=50;
     }
-    if(size<=200)
-        ctx.drawImage(bomb,200,200);
-    else if(size<1000)
-        ctx.drawImage(fire,350-size/2,350-size/2,size,size);
+    if(progress>0)
+        ctx.drawImage(bomb,200-changeX,200-changeY);
+    else if(progress<=0&&size<1000)
+        ctx.drawImage(fire,350-size-changeX/2,350-size/2-changeY,size,size);
     ctx.beginPath();
     ctx.lineWidth=5;
-    ctx.moveTo(453, 225);
+    ctx.moveTo(453-changeX, 225-changeY);
     var linex;
     var liney;
     for(var t = 0; t<1000*progress; t++){
@@ -115,12 +124,12 @@ function bombRender(){
             liney = 500+((t-870)*(t-870))/-9000;
             //ctx.lineTo(1250-t,500+((t-870)*(t-870))/-9000);
         }
-        ctx.lineTo(linex,liney);
+        ctx.lineTo(linex-changeX,liney-changeY);
     }
     ctx.strokeStyle = "rgb(0, 0, 0)";
     ctx.stroke();
     ctx.lineWidth=1;
-    addPart(linex,liney);
+    addPart(linex-changeX,liney-changeY);
 }
 
 function clear(){

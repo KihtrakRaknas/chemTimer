@@ -11,44 +11,11 @@
     <title>Timer</title>
   </head>
   <body>
-    <div class="alert alert-warning alert-dismissible" style="display:none" id="notANumber">
-	  	<button type="button" class="close" data-dismiss="alert">&#10006;</button>
-	    <strong>You did not enter a number</strong> You need to enter a positive number
-	</div>
-    <div id="controlPanel">
-        <form class="form-inline" onsubmit="return false">
-            <input id = "tim" type = "txt" class="form-control" placeholder="Enter a number">
-              <select class="form-control" id="units">
-                <option id="Milliseconds">Milliseconds</option>
-                <option id="Seconds">Seconds</option>
-                <option id="Minutes">Minutes</option>
-                <option id="Hours">Hours</option>
-                  <option id="Days">Days</option>
-                  <option id="Years">Years</option>
-                  <option id="Centuries">Centuries</option>
-              </select>
-            <button class = "btn btn-primary" id = "start">START</button>
-            <button class = "btn btn-secondary" style="display:none" id = "pause">PAUSE</button>
-            <button class = "btn btn-danger" style="display:none" id = "stop">STOP</button>
-            <label style = "margin-left: 50px;margin-right: 10px" for="soundMenu"><strong style="font-size:20px">Display: </strong></label>
-            <select class="form-control" style="margin-right: 10px">
-                <option id="PlainText">Plain Text</option>
-                <option id="Bomb">Bomb</option>
-            </select>
-            <label style = "margin-left: 10px;margin-right: 10px" for="soundMenu"><strong style="font-size:20px">Sound: </strong></label>
-            <select class="form-control" id="soundMenu">
-                <option id="Alarm">Alarm</option>
-                <option id="Explosion">Explosion</option>
-                <option id="Mute">Mute</option>
-            </select>
-            <small style = "margin-left: 10px">Code #<span id ="codeNumber"></span></small>
-        </form>
-        <div id="outJumbo"  style="display:none" class="jumbotron">
             <h1 style="text-align: center" id="output"></h1>
-        </div>
-    </div>
-      
-    <canvas id="myCanvas" width="680" height="370px" style="display: none;"></canvas>
+      <br>
+      <br>
+      <input id="milliseconds"type="checkbox" name="vehicle" value="seconds" checked="checked">milliseconds<br>
+      <input id="seconds"type="checkbox" name="vehicle" value="seconds" checked="checked">seconds<br>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->

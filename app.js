@@ -8,7 +8,7 @@ const Years = document.getElementById("Years");
 const Centuries = document.getElementById("Centuries");
 
 window.onload = function(){
-        countDownDate = new Date().setHours(20, 25) ;
+        countDownDate = new Date().setHours(14, 25,0,0) ;
         timerLoop = setInterval(updateTimer, 1);
 }
 
@@ -19,23 +19,6 @@ const PlainText = document.getElementById("PlainText");
 
 //add bomb exploading
 //scale canvas
-const outJumbo = document.getElementById("outJumbo");
-
-
-
-
-    const soundMenu = document.getElementById("soundMenu");
-    const Alarm = document.getElementById("Alarm");
-    const Explosion = document.getElementById("Explosion");
-    const Mute = document.getElementById("Mute");
-    const sound = document.createElement("audio");
-    //sound.src = "gentleAlarm.mp3";
-    var soundSource= "gentleAlarm.mp3";
-
-    sound.setAttribute("preload", "auto");
-    sound.setAttribute("controls", "none");
-    sound.style.display = "none";
-    document.body.appendChild(sound);
 
 
 
@@ -58,22 +41,15 @@ function updateTimer(){
                 timerState += hours + "h ";
             if(minutes!=0)
                 timerState += minutes + "m ";
-            if(seconds!=0&&document.getElementById('milliseconds').checked)
+            if(seconds!=0&&document.getElementById('seconds').checked)
                 timerState += seconds + "s ";
-            if(milli!=0&&document.getElementById('seconds').checked)
+            if(milli!=0&&document.getElementById('milliseconds').checked)
                 timerState += milli + "ms ";
             alarmRung = true;
         }else{
+            document.getElementById('checkboxs').style.display = "none";
             timerState = "CLASS IS OVER!!!";
-            sound.play();
+            clearInterval(timerLoop);
         }
         output.innerHTML = timerState;
 }
-
-sound.addEventListener("ended", function(){
-    if(soundSource!=""){
-        sound.src=soundSource;
-        sound.currentTime = 0;
-        sound.play();
-    }
-});
